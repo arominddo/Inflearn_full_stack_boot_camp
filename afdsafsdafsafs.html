@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Counter Example</title>
+  </head>
+  <body>
+    <div id="root">
+      <p>You clicked 0 times</p>
+      <button id="counter-button">
+        Click me
+      </button>
+    </div>
+    <script>
+      // 초기 count 상태를 0으로 설정
+      let count = 0;
+      // count 값을 변경하고, 화면을 갱신하는 함수
+      function handleClick() {
+        count++;
+        const countText = document.querySelector("#root p");
+        countText.innerHTML = `You clicked ${count} times`;
+      }
+      // 버튼에 이벤트 핸들러 등록
+      const button = document.querySelector("#counter-button");
+      button.addEventListener("click", handleClick);
+    </script>
+  </body>
+</html>
