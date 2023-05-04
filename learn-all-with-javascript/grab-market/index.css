@@ -63,8 +63,7 @@
   margin-bottom: 12px;
   border: 1px solid rgb(230 230 230);
   border-radius: 12px;
-  /* 자식이 침범하면 가려주겠다. */
-  overflow: hidden;
+  overflow: hidden;   /* 자식이 침범하면 가려주겠다. */
 }
 
 .product-img {

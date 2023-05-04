@@ -4,12 +4,15 @@
     <link href="index.css" type="text/css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
+
+  <!-- ============================================================== -->
   <body>
     <div id="header">
       <div id="header-area">
         <img src="./images/images/icons/logo.png" />
       </div>
     </div>
+
     <div id="body">
       <div id="banner">
         <img src="./images/images/banners/banner1.png" />
@@ -19,6 +22,7 @@
     </div>
     <div id="footer"></div>
   </body>
+
   <script>
     axios
       .get(
@@ -58,7 +62,7 @@
         document.querySelector("#product-list").innerHTML = productsHtml;
       })
       .catch(function (error) {
-        console.error("error 발생 : ", error);
+        console.error(`error 발생 : ${error}`);
       });
   </script>
 </html>
