@@ -16,11 +16,12 @@
   /* background-color: blue; */
   margin: 0 auto;
   padding-bottom: 24px;
+  min-height: 100vh;
 }
 
 #footer {
   height: 200px;
-  background-color: red;
+  background-color: rgb(230, 230, 230);
 }
 
 #banner {
