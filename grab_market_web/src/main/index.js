@@ -10,8 +10,9 @@ function MainPage() {
     .then(function(result){
         const products = result.data.products;
     }).catch(function(error){
-        console.error("에러 발생 :", error);
+        console.error("에러 발생s :", error);
     })
+
 
     return(
         <div>
