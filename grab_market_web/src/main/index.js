@@ -6,12 +6,25 @@ function MainPage() {
 
     const [products, setProducts] = React.useState([]);
 
-    axios.get("https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
+    React.useEffect(
+
+      function() {
+
+        axios.get("https://177e5534-aca6-4e2f-8705-fc40ce9b2134.mock.pstmn.io/products")
+        
     .then(function(result){
         const products = result.data.products;
+        setProducts(products);
+
     }).catch(function(error){
         console.error("에러 발생s :", error);
     })
+
+      }, []
+
+    );
+
+    
 
 
     return(
@@ -35,18 +48,18 @@ function MainPage() {
                                 <div>
                                   <img
                                     className="product-img"
-                                    src="images/products/keyboard1.jpg"
+                                    src={product.imageUrl}
                                   />
                                 </div>
                                 <div className="product-contents">
-                                  <span className="product-name">키보드</span>
-                                  <span className="product-price">50000원</span>
+                                  <span className="product-name">{product.name}</span>
+                                  <span className="product-price">{product.price}원</span>
                                   <div className="product-seller">
                                     <img
                                       className="product-avatar"
                                       src="images/icons/avatar.png"
                                     />
-                                    <span>그랩</span>
+                                    <span>{product.seller}</span>
                                   </div>
                                 </div>
                               </div>
