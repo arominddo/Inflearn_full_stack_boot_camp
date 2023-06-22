@@ -11,7 +11,7 @@ function MainPage() {
 
       function() {
 
-        axios.get("https://177e5534-aca6-4e2f-8705-fc40ce9b2134.mock.pstmn.io/products")
+        axios.get("http://localhost:8080/products")
         
     .then(function(result){
         const products = result.data.products;
