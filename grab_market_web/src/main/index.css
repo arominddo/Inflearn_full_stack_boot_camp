@@ -1,7 +1,6 @@
 
 #banner {
   height: 300px;
-  background-color: yellow;
 }
 
 
@@ -34,6 +33,7 @@
 .product-img {
   width: 100%;
   height: 210px;
+  object-fit: contain;
 }
 
 .product-contents {
@@ -77,4 +77,8 @@
 .product-date {
   font: 12px;
   color : rgb(136, 136, 136)
+}
+
+#product-headline {
+  margin-top: 8px;
 }
