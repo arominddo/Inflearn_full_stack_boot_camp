@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const multer = require("multer");
+
 const uploads = multer({
     storage : multer.diskStorage({
         destination : function(req, file, cb) {
@@ -35,6 +36,7 @@ app.get("/banners", (req, res) => {
 })
 
 app.get("/products", (req,res) => {
+
 
     models.Product.findAll({
         order : [["createdAt", "DESC"]],
