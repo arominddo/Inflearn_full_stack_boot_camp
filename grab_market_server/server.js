@@ -20,11 +20,25 @@ app.use(express.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));
 
+app.get("/banners", (req, res) => {
+    models.Banner.findAll({
+        limit : 2
+    }).then((result) => {
+        res.send({
+            banners : result
+        })
+
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send("에러가 발생했습니다.");
+    })
+})
+
 app.get("/products", (req,res) => {
 
     models.Product.findAll({
         order : [["createdAt", "DESC"]],
-        attributes : ["id", "name", "price", "createdAt", "seller", "imageUrl"]
+        attributes : ["id", "name", "price", "createdAt", "seller", "imageUrl", "soldout"]
     }).then((result) => {
         console.log("PRODUCTS : ", result);
         
@@ -94,7 +108,23 @@ app.post("/image", uploads.single("image"), (req, res) => {
     });
 });
 
-
+app.post("/purchase/:id", (req, res) => {
+    const {id} = req.params;
+    models.Product.update({
+        soldout : 1,
+    }, {
+        where: {
+            id
+        }
+    }).then((result) => {
+        res.send({
+            result : true
+        })
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send("에러가 발생했습니다.");
+    })
+})
 
 app.listen(port, () => {
     console.log("그랩의 쇼핑몰 서버가 돌아가고 있습니다.");
