@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Alert, SafeAreaView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Alert } from "react-native";
 import React from "react";
 import axios from "axios";
 import dayjs from "dayjs"
@@ -13,7 +13,7 @@ import AvatarImage from "../assets/icons/avatar.png";
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
 
-export default function MainScreen() {
+export default function MainScreen(props) {
 
     const [products, setProducts] = React.useState([]);
     const [banners, setBanners] = React.useState([]);
@@ -73,6 +73,9 @@ export default function MainScreen() {
                 <View sytle={styles.productList}>
                     {products.map((product, index) => {
                         return (
+                            <TouchableOpacity onPress={() => {
+                                props.navigation.navigate("Product")
+                            }}>
                             <View style={styles.productCard}>
                                 {product.soldout === 1 && (
                                     <View style={styles.productBlur} />
@@ -111,6 +114,7 @@ export default function MainScreen() {
                                     </View>
                                 </View>
                             </View>
+                            </TouchableOpacity>
                         );
                     })}
                 </View>
