@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Alert } from "react-native";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
@@ -15,10 +15,10 @@ dayjs.locale("ko");
 
 export default function MainScreen(props) {
 
-    const [products, setProducts] = React.useState([]);
-    const [banners, setBanners] = React.useState([]);
+    const [products, setProducts] = useState([]);
+    const [banners, setBanners] = useState([]);
 
-    React.useEffect(() => {
+    const getProduct = () => {
         axios
             .get(`${API_URL}/products`)
             .then((result) => {
@@ -28,7 +28,21 @@ export default function MainScreen(props) {
             .catch((error) => {
                 console.error(error);
             });
+    }
 
+    useEffect(() => {
+
+        const unsubscribe = props.navigation.addListener("focus", () => {
+            getProduct();
+
+        });
+       
+        return unsubscribe;
+
+    }, [props.navigation]);
+
+    useEffect(() => {
+        
         axios
         .get(`${API_URL}/banners`)
         .then((result) => {
@@ -53,18 +67,8 @@ export default function MainScreen(props) {
                     itemHeight={200}
                     renderItem={(obj) => {
                         return (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    Alert.alert("배너 클릭");
-                                }}
-                            >
-                                <Image
-                                    style={styles.bannerImage}
-                                    source={{
-                                        uri: `${API_URL}/${obj.item.imageUrl}`,
-                                    }}
-                                    resizeMode="contain"
-                                />
+                            <TouchableOpacity onPress={() => { Alert.alert("배너 클릭"); }} >
+                                <Image style={styles.bannerImage} source={{ uri: `${API_URL}/${obj.item.imageUrl}`}} resizeMode="contain" />
                             </TouchableOpacity>
                         );
                     }}
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
     },
 
     bannerImage: {
-      width: "100%",
+      width: "90%",
       height: 200,
     },
 
