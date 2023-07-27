@@ -5,7 +5,6 @@ import { API_URL } from "../config/constants";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
-
 function UploadPage(){
 
     const [imageUrl, setImageUrl] = useState(null);
@@ -13,6 +12,7 @@ function UploadPage(){
     const navigator = useNavigate();
 
     const onSubmit = (values) => {
+
         axios.post(`${API_URL}/products`, {
           name : values.name,
           description : values.description,
@@ -36,9 +36,13 @@ function UploadPage(){
 
         if(info.file.status === "done"){
             const response = info.file.response;
+            
             const imageUrl = response.imageUrl;
+            
             setImageUrl(imageUrl);
         }
+
+        
     }
 
 

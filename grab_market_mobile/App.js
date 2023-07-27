@@ -18,7 +18,6 @@ export default function App() {
                 <Stack.Navigator initialRouteName="Main">
                     <Stack.Screen name="Main" component={MainScreen} options={{title: "홈 화면"}}/>
                     <Stack.Screen name="Product" component={ProductScreen} options={{title: "상품 화면"}}/>
-                    
                 </Stack.Navigator>
 
             </NavigationContainer>

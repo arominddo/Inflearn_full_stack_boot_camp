@@ -68,6 +68,16 @@
   align-items: center;
 }
 
+.product-seller span {
+  display: inline-block;
+  font-size: small;
+  /* max-width: 35px; */
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .product-avatar {
   width: 24px;
 }
@@ -86,8 +96,14 @@
 }
 
 .product-date {
-  font: 12px;
-  color : rgb(136, 136, 136)
+  
+  font: 8px;
+  color : rgb(136, 136, 136);
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
 
 #product-headline {
