@@ -15,7 +15,10 @@ const uploads = multer({
     })
 });
 
-const port = 8080;
+const detectProduct = require("./helpers/detectProduct");
+const { prod, model } = require("@tensorflow/tfjs-node");
+
+const port = 8080 || process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
@@ -64,21 +67,28 @@ app.post("/products", (req, res) => {
         res.status(400).send("모든 필드를 입력해주세요.")
     }
 
-    models.Product.create({
-        name,
-        description,
-        price,
-        seller,
-        imageUrl
-    }).then((result) => {
-        console.log("상품 생성 결과 : ", result);
-        res.send({
-            result,
+    detectProduct(imageUrl, (type) => {
+
+        models.Product.create({
+            name,
+            description,
+            price,
+            seller,
+            imageUrl,
+            type
+        }).then((result) => {
+            console.log("상품 생성 결과 : ", result);
+            res.send({
+                result,
+            })
+        }).catch((error) => {
+            console.error(error);
+            res.status(400).send("상품 업로드에 문제가 발생했습니다.");
         })
-    }).catch((error) => {
-        console.error(error);
-        res.status(400).send("상품 업로드에 문제가 발생했습니다.");
+
     })
+
+    
 
 })
 
@@ -127,6 +137,37 @@ app.post("/purchase/:id", (req, res) => {
         res.status(500).send("에러가 발생했습니다.");
     })
 })
+
+app.get("/products/:id/recommendation", (req, res) => {
+    const {id} = req.params;
+
+    models.Product.findOne({
+        where: {
+            id
+        }
+    }).then((product) => {
+        console.log(product);
+        const type = product.type;
+        models.Product.findAll({
+            where:{
+                type,
+                id : {
+                    [models.Sequelize.Op.ne] : id
+                }
+            }
+        }).then((products) => {
+            res.send({
+                products
+            });
+        });
+    }).catch((error) => {
+        console.error(error);
+        res.status(500).send("에러가 발생했습니다.");
+    });
+
+});
+
+
 
 app.listen(port, () => {
     console.log("그랩의 쇼핑몰 서버가 돌아가고 있습니다.");
