@@ -5,28 +5,41 @@ import { useEffect, useState } from "react";
 import { API_URL } from "../config/constants";
 import dayjs from "dayjs"
 import {Button, message} from "antd";
+import ProductCard from '../components/productCard';
+
 
 function ProductPage(){
 
     const {id} = useParams();
 
     const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState([]); // 추천 상품 관련
     
     const getProduct = () => {
         axios.get(`${API_URL}/products/${id}`)
-        .then(
-            function(result){
+        .then((result) => {
                 setProduct(result.data.product);
-            }
-            )
-            .catch(function(error) {
+            })
+            .catch((error) => {
                 console.error(error);
             })
     }
 
-    useEffect(function(){
+    const getRecommendations = () => {
+        axios.get(`${API_URL}/products/${id}/recommendation`)
+        .then((result) => {
+            setProducts([result.data.products]);
+            console.log(products);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+    }
+
+    useEffect(() => {
 
         getProduct();
+        getRecommendations();
         }, []);
    
     if(product === null){
@@ -62,7 +75,22 @@ function ProductPage(){
                 <Button id="purchase-button" size="large" type="primary" danger onClick={onClickPurchase} disabled={product.soldout === 1 ? true : false}>
                     재빨리 구매하기
                 </Button>
-                <pre id="description">{product.description}</pre>
+                <div id="description-box">
+                    <pre id="description">{product.description}</pre>
+                </div>
+                <div>
+                    <h1>추천 상품</h1>
+                    <div>
+                    {
+                        products.map((product, index) => {
+                            return (
+                                <ProductCard key={index} product={product} />
+                            )
+                        })
+                    }
+                    </div>
+
+                </div>
             </div>
         </div>
         
