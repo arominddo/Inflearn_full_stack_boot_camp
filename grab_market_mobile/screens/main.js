@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, Alert } from "react-native";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
@@ -6,9 +5,8 @@ import dayjs from "dayjs"
 import relativeTime from "dayjs/plugin/relativeTime"
 import "dayjs/locale/ko"
 import Carousel from "react-native-reanimated-carousel"
-
 import { API_URL } from "../config/constants";
-import AvatarImage from "../assets/icons/avatar.png";
+import ProductCard from "../components/productCard";
 
 dayjs.extend(relativeTime);
 dayjs.locale("ko");
@@ -22,7 +20,6 @@ export default function MainScreen(props) {
         axios
             .get(`${API_URL}/products`)
             .then((result) => {
-                console.log(result);
                 setProducts(result.data.products)
             })
             .catch((error) => {
@@ -77,50 +74,7 @@ export default function MainScreen(props) {
                 <View sytle={styles.productList}>
                     {products.map((product, index) => {
                         return (
-                            <TouchableOpacity onPress={() => {
-                                props.navigation.navigate("Product", {
-                                    id: product.id
-                                })
-                            }}>
-                            <View style={styles.productCard}>
-                                {product.soldout === 1 && (
-                                    <View style={styles.productBlur} />
-                                )}
-                                <View>
-                                    <Image
-                                        style={styles.productImage}
-                                        source={{
-                                            uri: `${API_URL}/${product.imageUrl}`,
-                                        }}
-                                        resizeMode={"contain"}
-                                    />
-                                </View>
-                                <View style={styles.productContents}>
-                                    <Text sytle={styles.productName}>
-                                        {product.name}
-                                    </Text>
-                                    <Text sytle={styles.productPrice}>
-                                        {product.price}원
-                                    </Text>
-                                    <View style={styles.productFooter}>
-                                        <View style={styles.productSeller}>
-                                            <Image
-                                                style={styles.productAvatar}
-                                                source={AvatarImage}
-                                            />
-                                            <Text
-                                                style={styles.productSellerName}
-                                            >
-                                                {product.seller}
-                                            </Text>
-                                        </View>
-                                        <Text style={styles.productDate}>
-                                            {dayjs(product.createdAt).fromNow()}
-                                        </Text>
-                                    </View>
-                                </View>
-                            </View>
-                            </TouchableOpacity>
+                            <ProductCard product={product} key={index} navigation={props.navigation} />
                         );
                     })}
                 </View>

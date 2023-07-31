@@ -4,6 +4,7 @@ import {Image, ActivityIndicator, StyleSheet, View, Text, TouchableOpacity, Aler
 import { API_URL } from "../config/constants";
 import Avatar from "../assets/icons/avatar.png"
 import dayjs from "dayjs"
+import ProductCard from "../components/productCard";
 
 
 export default function ProductScreen(props){
@@ -11,13 +12,23 @@ export default function ProductScreen(props){
     const {id} = props.route.params;
 
     const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState([]);
 
 
     const getProduct = () => {
         axios.get(`${API_URL}/products/${id}`)
         .then((result) => {
-            console.log("product result : ", result.data);
             setProduct(result.data.product);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+    }
+
+    const getRecommendedProduct = () => {
+        axios.get(`${API_URL}/products/${id}/recommendation`)
+        .then((result) => {
+            setProducts(result.data.products);
         })
         .catch((error) => {
             console.error(error);
@@ -27,7 +38,8 @@ export default function ProductScreen(props){
 
     useEffect(() => {
         getProduct();
-    }, []);
+        getRecommendedProduct();
+    }, [id]);
 
     const onPressButton = () => {
         if(product.soldout !== 1) {
@@ -65,7 +77,15 @@ export default function ProductScreen(props){
                         <Text style={styles.productPrice}>{product.price} 원</Text>
                         <Text style={styles.productDate}>{dayjs(product.createAt).format("YYYY년 MM월 DD일")}</Text>
                         <Text style={styles.productDescription}>{product.description}</Text>
-
+                    </View>
+                    <View style={styles.divider} />
+                    <Text style={styles.recommendationHeadline}>추천 상품</Text>
+                    <View style={styles.recommendationSection}>
+                        {products.map((product, index) => {
+                            return (
+                                <ProductCard product={product} key={index} navigation={props.navigation} />
+                            )
+                        })}
                     </View>
                 </View>
             </ScrollView>
@@ -131,7 +151,8 @@ const styles = StyleSheet.create({
 
     productDescription: {
         marginTop : 16,
-        fontSize: 17
+        fontSize: 17,
+        marginBottom : 32
     },
 
     purchaseButton: {
@@ -160,8 +181,18 @@ const styles = StyleSheet.create({
         alignItems : "center",
         justifyContent: "center"
 
-    }
+    },
 
+    recommendationSection: {
+        alignItems : "center",
+        marginTop : 16,
+        paddingBottom : 70
+    },
+
+    recommendationHeadline: {
+
+        fontSize : 30,
+    }
 
 
 

@@ -28,8 +28,7 @@ function ProductPage(){
     const getRecommendations = () => {
         axios.get(`${API_URL}/products/${id}/recommendation`)
         .then((result) => {
-            setProducts([result.data.products]);
-            console.log(products);
+            setProducts(result.data.products);
         })
         .catch((error) => {
             console.error(error);
@@ -40,7 +39,7 @@ function ProductPage(){
 
         getProduct();
         getRecommendations();
-        }, []);
+        }, [id]);
    
     if(product === null){
         return <h1>상품 정보를 받고 있습니다...</h1>
@@ -80,14 +79,14 @@ function ProductPage(){
                 </div>
                 <div>
                     <h1>추천 상품</h1>
-                    <div>
-                    {
-                        products.map((product, index) => {
-                            return (
-                                <ProductCard key={index} product={product} />
-                            )
-                        })
-                    }
+                    <div style={{display:"flex", flexWrap: "wrap"}}>
+                        {
+                            products.map((product, index) => {
+                                return (
+                                    <ProductCard product={product} key={index} />
+                                )
+                            })
+                        }
                     </div>
 
                 </div>
