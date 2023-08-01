@@ -1,4 +1,4 @@
-# Inflearn_full_stack_practice
+# Inflearn_full_stack_boot_camp
 
 < 실행 방법 1 - Local 환경에서의 실행 >
 
